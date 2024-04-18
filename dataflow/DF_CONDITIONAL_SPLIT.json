@@ -1,0 +1,102 @@
+{
+	"name": "DF_CONDITIONAL_SPLIT",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_JOINED_EMPLOYEES_DEPARTMENTS",
+						"type": "DatasetReference"
+					},
+					"name": "AllHREmployees"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_ItEmployees_SINK",
+						"type": "DatasetReference"
+					},
+					"name": "sinkItEmployeees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_EXEmployees_SINK",
+						"type": "DatasetReference"
+					},
+					"name": "sinkExEmployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_FinanceEmployees_SINK",
+						"type": "DatasetReference"
+					},
+					"name": "sinkfinemployees"
+				}
+			],
+			"transformations": [
+				{
+					"name": "splitbasedondepartments"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EMPLOYEE_ID as string,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          PHONE_NUMBER as string,",
+				"          HIRE_DATE as string,",
+				"          JOB_ID as string,",
+				"          SALARY as string,",
+				"          COMMISSION_PCT as string,",
+				"          MANAGER_ID as string,",
+				"          DEPARTMENT_ID as string,",
+				"          DEPARTMENT_NAME as string,",
+				"          LOCATION_ID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> AllHREmployees",
+				"AllHREmployees split(equals(DEPARTMENT_NAME, 'IT'),",
+				"     equals(DEPARTMENT_NAME, 'Executive'),",
+				"     equals(DEPARTMENT_NAME, 'Finance'),",
+				"     equals(DEPARTMENT_NAME, 'Purchasing'),",
+				"     equals(DEPARTMENT_NAME, 'Shipping'),",
+				"     equals(DEPARTMENT_NAME, 'Sales'),",
+				"     equals(DEPARTMENT_NAME, 'Administration'),",
+				"     equals(DEPARTMENT_NAME, 'Marketing'),",
+				"     equals(DEPARTMENT_NAME, 'Accounting'),",
+				"     disjoint: false) ~> splitbasedondepartments@(ITEmployees, ExEmployess, FinanceEmployees, PurchasingEmployees, ShippingEmployees, SalesEmployees, AdministrationEmployees, MarketingEmployees, AccountingEmployees, OtherEmployees)",
+				"splitbasedondepartments@ITEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['ITEmployees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkItEmployeees",
+				"splitbasedondepartments@ExEmployess sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['ExEmployees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkExEmployees",
+				"splitbasedondepartments@FinanceEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['FinanceEmployees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkfinemployees"
+			]
+		}
+	}
+}
