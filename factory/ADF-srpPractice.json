@@ -1,0 +1,9 @@
+{
+	"name": "ADF-srpPractice",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "1e9bd066-defe-4558-b6e4-0da3e9d7926e",
+		"tenantId": "71480d1f-c3c3-47f7-b3f5-29fee7f23843"
+	}
+}
