@@ -1,0 +1,93 @@
+{
+	"name": "DF_JOIN_TRANSFORMATION",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SOURCE_HR_EMPLOYEES",
+						"type": "DatasetReference"
+					},
+					"name": "HREmployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SOURCE_HR_DEPARTMENTS",
+						"type": "DatasetReference"
+					},
+					"name": "HRDepartments"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SINNK_JOIN_EMPLOYEE_DEPARTMENT",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "HREmployeesjoinonHRDepartments"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EMPLOYEE_ID as string,",
+				"          FIRST_NAME as string,",
+				"          LAST_NAME as string,",
+				"          EMAIL as string,",
+				"          PHONE_NUMBER as string,",
+				"          HIRE_DATE as string,",
+				"          JOB_ID as string,",
+				"          SALARY as string,",
+				"          COMMISSION_PCT as string,",
+				"          MANAGER_ID as string,",
+				"          DEPARTMENT_ID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> HREmployees",
+				"source(output(",
+				"          DEPARTMENT_ID as string,",
+				"          DEPARTMENT_NAME as string,",
+				"          MANAGER_ID as string,",
+				"          LOCATION_ID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> HRDepartments",
+				"HREmployees, HRDepartments join(HREmployees@DEPARTMENT_ID == HRDepartments@DEPARTMENT_ID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> HREmployeesjoinonHRDepartments",
+				"HREmployeesjoinonHRDepartments sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     filePattern:'Employee_Department_inner_join',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          EMPLOYEE_ID,",
+				"          FIRST_NAME,",
+				"          LAST_NAME,",
+				"          EMAIL,",
+				"          PHONE_NUMBER,",
+				"          HIRE_DATE,",
+				"          JOB_ID,",
+				"          SALARY,",
+				"          COMMISSION_PCT,",
+				"          MANAGER_ID = HREmployees@MANAGER_ID,",
+				"          DEPARTMENT_ID = HREmployees@DEPARTMENT_ID,",
+				"          DEPARTMENT_NAME,",
+				"          LOCATION_ID",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
