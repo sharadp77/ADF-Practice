@@ -40,6 +40,48 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkpurchasinEmployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_Shipping_Employees",
+						"type": "DatasetReference"
+					},
+					"name": "sinkshippingemployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_SalesEmployees",
+						"type": "DatasetReference"
+					},
+					"name": "sinksalesemployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_AdministartionEmployees",
+						"type": "DatasetReference"
+					},
+					"name": "sinkadministartionemployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_Marketing_Employees",
+						"type": "DatasetReference"
+					},
+					"name": "sinkmarketingemployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_Accounting_Employees",
+						"type": "DatasetReference"
+					},
+					"name": "sinkaccountingemployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_Other_Employees",
+						"type": "DatasetReference"
+					},
+					"name": "sinkotheremployees"
 				}
 			],
 			"transformations": [
@@ -111,7 +153,61 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sinkpurchasinEmployees"
+				"     partitionBy('hash', 1)) ~> sinkpurchasinEmployees",
+				"splitbasedondepartments@ShippingEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Shipping_Employees'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkshippingemployees",
+				"splitbasedondepartments@SalesEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Sales_Employees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinksalesemployees",
+				"splitbasedondepartments@AdministrationEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Administration_Employees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkadministartionemployees",
+				"splitbasedondepartments@MarketingEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Marketing_Employees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkmarketingemployees",
+				"splitbasedondepartments@AccountingEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Accounting_Employees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkaccountingemployees",
+				"splitbasedondepartments@OtherEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Others_Employees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkotheremployees"
 			]
 		}
 	}
