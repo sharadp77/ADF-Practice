@@ -33,6 +33,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkfinemployees"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_Purchasing_Employees",
+						"type": "DatasetReference"
+					},
+					"name": "sinkpurchasinEmployees"
 				}
 			],
 			"transformations": [
@@ -95,7 +102,16 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sinkfinemployees"
+				"     partitionBy('hash', 1)) ~> sinkfinemployees",
+				"splitbasedondepartments@PurchasingEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Purchasing_Emmployees.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkpurchasinEmployees"
 			]
 		}
 	}
