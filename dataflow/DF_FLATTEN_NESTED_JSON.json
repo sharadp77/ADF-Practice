@@ -1,0 +1,29 @@
+{
+	"name": "DF_FLATTEN_NESTED_JSON",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SOURCE_SAMPLE_NESTED_JSON",
+						"type": "DatasetReference"
+					},
+					"name": "Samplenested"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          coffee as (region as (id as integer, name as string)[], country as (id as integer, company as string)),",
+				"          brewing as (region as (id as integer, name as string)[], country as (id as integer, company as string))",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> Samplenested"
+			]
+		}
+	}
+}
