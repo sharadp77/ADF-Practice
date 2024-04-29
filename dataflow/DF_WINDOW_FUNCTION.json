@@ -1,5 +1,5 @@
 {
-	"name": "DF-WINDOW_FUNCTION",
+	"name": "DF_WINDOW_FUNCTION",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
