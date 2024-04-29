@@ -13,7 +13,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          coffee as (region as (id as integer, name as string)[], country as (id as integer, company as string)),",
@@ -22,7 +26,14 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> Samplenested"
+				"     documentForm: 'documentPerLine') ~> Samplenested",
+				"Samplenested foldDown(unroll(brewing.region),",
+				"     mapColumn(",
+				"          coffee,",
+				"          brewing",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
 			]
 		}
 	}
