@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "DF_VALIDATE_SCHEMA_OPTION",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
