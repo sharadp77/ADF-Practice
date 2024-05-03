@@ -1,0 +1,75 @@
+{
+	"name": "DF_PARSE_TRANSFORMATION",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeTable_AzurePostgreSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeTable"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_PARSE_TRANSFORM_UPDATE",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "parseSkills"
+				},
+				{
+					"name": "parseAddress"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as integer,",
+				"          empname as string,",
+				"          skills as string,",
+				"          address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> EmployeeTable",
+				"EmployeeTable parse(ParseSkills = skills ? (Skill1 as string,",
+				"          Skill2 as string,",
+				"          Skill3 as string),",
+				"     format: 'delimited',",
+				"     columnNamesAsHeader: false,",
+				"     columnDelimiter: '|',",
+				"     nullValue: '') ~> parseSkills",
+				"parseSkills parse(ParseAddress = address ? (city as string,",
+				"          Country as string),",
+				"     format: 'json',",
+				"     documentForm: 'singleDocument') ~> parseAddress",
+				"parseAddress sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Employee_Parse_Transform.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          empid,",
+				"          empname,",
+				"          Skill1 = ParseSkills.Skill1,",
+				"          Skill2 = ParseSkills.Skill2,",
+				"          Skill3 = ParseSkills.Skill3,",
+				"          city = ParseAddress.city,",
+				"          Country = ParseAddress.Country",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
