@@ -1,0 +1,23 @@
+{
+	"name": "DS_SINK_COPY_DATA_FILES",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_srpadfpractice_ADLS_GEN2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "Output1",
+				"fileSystem": "adf-practice"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
