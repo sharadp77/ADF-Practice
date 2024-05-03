@@ -1,5 +1,5 @@
 {
-	"name": "PL_COPY",
+	"name": "PL_COPY_DATA_TO_OUTPUT1",
 	"properties": {
 		"activities": [
 			{
@@ -77,6 +77,11 @@
 				]
 			}
 		],
+		"variables": {
+			"Max_Salary": {
+				"type": "Integer"
+			}
+		},
 		"annotations": []
 	}
 }

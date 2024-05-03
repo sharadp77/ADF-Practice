@@ -1,5 +1,5 @@
 {
-	"name": "DF_EMPLOYEE",
+	"name": "DF_EMPLOYEE_MAXSALARY",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
