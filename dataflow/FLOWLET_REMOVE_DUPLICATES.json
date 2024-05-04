@@ -1,0 +1,44 @@
+{
+	"name": "FLOWLET_REMOVE_DUPLICATES",
+	"properties": {
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "input1"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          id as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          salary as string",
+				"     ),",
+				"     order: 0,",
+				"     allowSchemaDrift: true) ~> input1",
+				"input1 aggregate(groupBy(id,",
+				"          name,",
+				"          gender,",
+				"          salary),",
+				"     Count = count()) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          id,",
+				"          name,",
+				"          gender,",
+				"          salary",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
+			]
+		}
+	}
+}
