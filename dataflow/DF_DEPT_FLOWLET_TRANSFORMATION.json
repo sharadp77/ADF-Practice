@@ -1,5 +1,5 @@
 {
-	"name": "DF_DEPARTMENTS_REMOVE_DUPLICATES",
+	"name": "DF_DEPT_FLOWLET_TRANSFORMATION",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DS_Sink_OUTPUT_DEP",
+						"referenceName": "DS_SINK_OUTPUT",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -23,7 +23,14 @@
 			],
 			"transformations": [
 				{
-					"name": "aggregate1"
+					"name": "flowlet1",
+					"flowlet": {
+						"referenceName": "FLOWLET_REMOVE_DUPLICATES",
+						"type": "DataFlowReference"
+					}
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -34,10 +41,16 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Department",
-				"Department aggregate(groupBy(Id,",
-				"          Name),",
-				"     Count = count()) ~> aggregate1",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"derivedColumn1 compose(mapColumn(",
+				"          id = Id,",
+				"          Name,",
+				"          gender = Id,",
+				"          salary = Id",
+				"     ),",
+				"     composition: 'FLOWLET_REMOVE_DUPLICATES') ~> flowlet1@(output1)",
+				"Department derive(gender = 'abcd',",
+				"          salary = 'sharad') ~> derivedColumn1",
+				"flowlet1@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['Departmennts.csv'],",
 				"     umask: 0022,",
@@ -46,8 +59,8 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
-				"          Id,",
-				"          Name",
+				"          id,",
+				"          name",
 				"     ),",
 				"     partitionBy('hash', 1)) ~> sink1"
 			]
