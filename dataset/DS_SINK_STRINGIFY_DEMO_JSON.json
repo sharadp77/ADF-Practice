@@ -1,0 +1,19 @@
+{
+	"name": "DS_SINK_STRINGIFY_DEMO_JSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_srpadfpractice_ADLS_GEN2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "output",
+				"fileSystem": "adf-practice"
+			}
+		},
+		"schema": {}
+	}
+}
