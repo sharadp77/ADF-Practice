@@ -23,7 +23,11 @@
 			],
 			"transformations": [
 				{
-					"name": "aggregate1"
+					"name": "flowlet1",
+					"flowlet": {
+						"referenceName": "FLOWLET_REMOVE_DUPLICATES",
+						"type": "DataFlowReference"
+					}
 				}
 			],
 			"scriptLines": [
@@ -36,14 +40,16 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Employee",
-				"Employee aggregate(groupBy(id,",
+				"Employee compose(mapColumn(",
+				"          id,",
 				"          name,",
 				"          gender,",
-				"          salary),",
-				"     Count = count()) ~> aggregate1",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"          salary",
+				"     ),",
+				"     composition: 'FLOWLET_REMOVE_DUPLICATES') ~> flowlet1@(output1)",
+				"flowlet1@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     partitionFileNames:['Employeees.csv'],",
+				"     partitionFileNames:['Emp.csv'],",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
