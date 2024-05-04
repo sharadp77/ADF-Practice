@@ -1,0 +1,56 @@
+{
+	"name": "DF_ASSERTION_TRANSFORMATION",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SOURCE_EMPLOYEES1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SOURCE_DEPARTMENTS1",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "assert1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          doj as string,",
+				"          depid as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          deptId as string,",
+				"          deptName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source2",
+				"source1, source2 assert(expectTrue(!isNull(toDate(doj,'yyyyMMdd')), false, 'assertDOJ', null, \"Here we are checking DOJ rows\"),",
+				"     expectUnique(empid, false, 'assertEMPID', null, \"Unique MEPID\"),",
+				"     expectExists(depid == deptId, false, 'assertEXIST')) ~> assert1",
+				"assert1 derive(isErrorRow = isError()) ~> derivedColumn1"
+			]
+		}
+	}
+}
