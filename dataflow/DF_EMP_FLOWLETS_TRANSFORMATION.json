@@ -42,7 +42,7 @@
 				"     ignoreNoFilesFound: false) ~> Employee",
 				"Employee compose(mapColumn(",
 				"          id,",
-				"          name,",
+				"          Name = id,",
 				"          gender,",
 				"          salary",
 				"     ),",
