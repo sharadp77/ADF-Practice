@@ -50,6 +50,11 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          name,",
+				"          Skills,",
+				"          ContactStringify",
+				"     ),",
 				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
