@@ -19,13 +19,34 @@
 					"name": "source2"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_EMPLOYEES1_GOOD_DATA",
+						"type": "DatasetReference"
+					},
+					"name": "sinkGoodData"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_EMPLOYEES1_BAD_DATA",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "assert1"
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "filterGoodrows"
+				},
+				{
+					"name": "filterBadRows"
 				}
 			],
 			"scriptLines": [
@@ -49,7 +70,42 @@
 				"source1, source2 assert(expectTrue(!isNull(toDate(doj,'yyyyMMdd')), false, 'assertDOJ', null, \"Here we are checking DOJ rows\"),",
 				"     expectUnique(empid, false, 'assertEMPID', null, \"Unique MEPID\"),",
 				"     expectExists(depid == deptId, false, 'assertEXIST')) ~> assert1",
-				"assert1 derive(isErrorRow = isError()) ~> derivedColumn1"
+				"assert1 derive(isErrorRow = isError(),",
+				"          isIncorrectDeptRow = hasError('assertEXIST')) ~> derivedColumn1",
+				"derivedColumn1 filter(isErrorRow == false()) ~> filterGoodrows",
+				"derivedColumn1 filter(isErrorRow == true()) ~> filterBadRows",
+				"filterGoodrows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Employees1.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          empid,",
+				"          name,",
+				"          gender,",
+				"          doj,",
+				"          deptId = depid",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sinkGoodData",
+				"filterBadRows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Employees1.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          empid,",
+				"          name,",
+				"          gender,",
+				"          doj,",
+				"          depid",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
