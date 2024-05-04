@@ -14,6 +14,9 @@
 				},
 				{
 					"name": "input1"
+				},
+				{
+					"name": "output1"
 				}
 			],
 			"scriptLines": [
@@ -37,7 +40,8 @@
 				"          salary",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 output() ~> output1"
 			]
 		}
 	}
