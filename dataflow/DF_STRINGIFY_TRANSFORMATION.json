@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DS_SOURCE_DEMO_JSON_FILE",
+						"referenceName": "DS_SINK_STRINGIFY_DEMO_JSON",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -44,11 +44,6 @@
 				"stringify1 derive(ContactStringify = toString(ContactStringify)) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          name as string,",
-				"          Skills as string[],",
-				"          Contact as (Mobile as string, Landline as string)",
-				"     ),",
 				"     partitionFileNames:['Stringify_demo_json.csv'],",
 				"     umask: 0022,",
 				"     preCommands: [],",
