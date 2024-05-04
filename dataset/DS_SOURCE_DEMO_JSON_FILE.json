@@ -1,0 +1,44 @@
+{
+	"name": "DS_SOURCE_DEMO_JSON_FILE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_srpadfpractice_ADLS_GEN2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "demo.json",
+				"folderPath": "input",
+				"fileSystem": "adf-practice"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"Skills": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"Contact": {
+					"type": "object",
+					"properties": {
+						"Mobile": {
+							"type": "string"
+						},
+						"Landline": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	}
+}
