@@ -1,0 +1,42 @@
+{
+	"name": "DF_UDF_USERDEFINED",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SOURCE_EMPLOYEES1_DATA",
+						"type": "DatasetReference"
+					},
+					"name": "Employees1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"udfLibraries": [
+				{
+					"referenceName": "stringFunction",
+					"type": "DataFlowReference"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as integer,",
+				"          name as string,",
+				"          gender as string,",
+				"          doj as string,",
+				"          depid as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Employees1",
+				"Employees1 derive(gender = genderValuesInIntegerRows(gender)) ~> derivedColumn1"
+			]
+		}
+	}
+}
