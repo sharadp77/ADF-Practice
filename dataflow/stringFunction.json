@@ -7,7 +7,7 @@
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				"genderValuesInInteger(string) as integer = iif(i1=='male',1,iif(i1=='female', 0,-1))"
+				"genderValuesInIntegerRows(string) as integer = iif(i1=='male',1,iif(i1=='female', 0,-1))"
 			]
 		}
 	}
