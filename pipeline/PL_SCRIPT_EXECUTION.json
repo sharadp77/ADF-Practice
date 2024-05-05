@@ -30,6 +30,40 @@
 						"logDestination": "ActivityOutput"
 					}
 				}
+			},
+			{
+				"name": "ExecuteSQLScript2",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSqlDatabase1_srppractice_practicedb",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "name",
+									"type": "String",
+									"value": "Shrikant",
+									"direction": "Input"
+								}
+							],
+							"type": "Query",
+							"text": "SELECT @name as NameCol;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"annotations": []
