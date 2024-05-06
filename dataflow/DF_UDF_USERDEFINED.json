@@ -14,6 +14,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "DS_SINK_DERIVED_COLUMNS_EMPLOYYES1",
+						"type": "DatasetReference"
+					},
 					"name": "sink1"
 				}
 			],
@@ -42,8 +46,13 @@
 				"Employees1 derive(gender = genderValuesInIntegerRows(gender)) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:['Employees1_Derived_columns.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
