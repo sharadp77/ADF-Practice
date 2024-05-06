@@ -1,0 +1,46 @@
+{
+	"name": "DF_CAST_TRANSFORMATION",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SOURCE_EMPLOYEES2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          doj as string,",
+				"          depid as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 cast(output(",
+				"          empid as integer,",
+				"          doj as date 'dd/MM/yyyy',",
+				"          depid as integer",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 split(!isError(),",
+				"     disjoint: false) ~> split1@(goodRows, badRows)"
+			]
+		}
+	}
+}
