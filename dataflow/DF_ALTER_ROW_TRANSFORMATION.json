@@ -52,6 +52,7 @@
 				"     insertable:true,",
 				"     updateable:true,",
 				"     upsertable:true,",
+				"     keys:['empid'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
