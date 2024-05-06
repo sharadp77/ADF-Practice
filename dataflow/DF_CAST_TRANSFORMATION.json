@@ -12,7 +12,22 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_GOODROWS_EMPLOYEES2",
+						"type": "DatasetReference"
+					},
+					"name": "sinkGoodData"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_SINK_BADROWS_EMPLOYEES2",
+						"type": "DatasetReference"
+					},
+					"name": "sinkBadRows"
+				}
+			],
 			"transformations": [
 				{
 					"name": "cast1"
@@ -39,7 +54,25 @@
 				"     ),",
 				"     errors: true) ~> cast1",
 				"cast1 split(!isError(),",
-				"     disjoint: false) ~> split1@(goodRows, badRows)"
+				"     disjoint: false) ~> split1@(goodRows, badRows)",
+				"split1@goodRows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Employees2_Goodrows.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkGoodData",
+				"split1@badRows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Employees2_badrows.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkBadRows"
 			]
 		}
 	}
