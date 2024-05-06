@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADF-srpPractice"
+		},
+		"LS_AzurePostgreSql1_connectionString": {
+			"value": ""
+		},
+		"LS_AzureSqlDatabase1_srppractice_practicedb_connectionString": {
+			"value": ""
+		},
+		"LS_srpadfpractice_ADLS_GEN2_accountKey": {
+			"value": ""
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://kv-srppractice.vault.azure.net/"
+		},
+		"LS_Web1_properties_typeProperties_url": {
+			"value": "https://www.careerpower.in/states-and-capitals-of-india.html"
+		},
+		"LS_srpadfpractice_ADLS_GEN2_properties_typeProperties_url": {
+			"value": "https://srpadfpractice.dfs.core.windows.net/"
+		}
+	}
+}
