@@ -1,5 +1,5 @@
 {
-	"name": "PL_COPY_PIPELINE",
+	"name": "PL_COPY_PIPELINE_MAIN",
 	"properties": {
 		"activities": [
 			{
@@ -59,6 +59,27 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Copy Employees",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineReturnValue",
+					"setSystemVariable": true
+				}
 			}
 		],
 		"annotations": []
