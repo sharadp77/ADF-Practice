@@ -78,6 +78,22 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "pipelineReturnValue",
+					"value": [
+						{
+							"key": "Pipelinename",
+							"value": {
+								"type": "String",
+								"content": "PL_COPY_PIPELINE_MAIN"
+							}
+						},
+						{
+							"key": "runId",
+							"value": {
+								"type": "Expression",
+								"content": "@pipeline().RunId"
+							}
+						}
+					],
 					"setSystemVariable": true
 				}
 			}
